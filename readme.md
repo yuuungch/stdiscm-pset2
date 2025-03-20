@@ -4,7 +4,6 @@
 ## Instructions to Run:
 - Open with Visual Studio
 - Run in Debug mode, can be with (F5) or without debugger (Ctrl + F5)
-- Enter values for tank, healer, and DPS
 
 ## Config File Contents:
 | Variable |         Description      |
