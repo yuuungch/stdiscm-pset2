@@ -6,6 +6,6 @@
 
 using namespace std;
 
-unordered_map<string, int> read_config(const string& filename);
+unordered_map<string, unsigned int> read_config(const string& filename);
 
 #endif // CONFIG_READER_H

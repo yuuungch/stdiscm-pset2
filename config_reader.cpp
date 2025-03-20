@@ -3,11 +3,12 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
-unordered_map<string, int> read_config(const string& filename) {
-    unordered_map<string, int> config;
+unordered_map<string, unsigned int> read_config(const string& filename) {
+    unordered_map<string, unsigned int> config;
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -30,15 +31,22 @@ unordered_map<string, int> read_config(const string& filename) {
     while (getline(file, line)) {
         istringstream iss(line);
         string key;
-        int value;
+        unsigned long long value; // Using larger type to check for overflow
         if (!(iss >> key >> value)) {
             cerr << "Error: Invalid line in config file: " << line << endl;
             continue;
         }
         
+        // Check for overflow
+        if (value > numeric_limits<unsigned int>::max()) {
+            cerr << "Error: Value for " << key << " (" << value << ") exceeds maximum allowed value (" 
+                 << numeric_limits<unsigned int>::max() << ")" << endl;
+            continue;
+        }
+
         // Validate values based on key
         bool valid = true;
-        if (value <= 0) {
+        if (value == 0) {
             cerr << "Error: Invalid value for " << key << ". Must be a positive integer." << endl;
             valid = false;
         }
@@ -52,7 +60,7 @@ unordered_map<string, int> read_config(const string& filename) {
         }
         
         if (valid) {
-            config[key] = value;
+            config[key] = static_cast<unsigned int>(value);
         }
     }
 

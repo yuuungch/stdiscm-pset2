@@ -3,16 +3,16 @@
 
 class Party {
 public:
-    Party(int id, int tank, int healer, int dps1, int dps2, int dps3);
-    int getId() const;
+    Party(unsigned int id, unsigned int tank, unsigned int healer, unsigned int dps1, unsigned int dps2, unsigned int dps3);
+    unsigned int getId() const;
 
 private:
-    int id;
-    int tank;
-    int healer;
-    int dps1;
-    int dps2;
-    int dps3;
+    unsigned int id;
+    unsigned int tank;
+    unsigned int healer;
+    unsigned int dps1;
+    unsigned int dps2;
+    unsigned int dps3;
 };
 
 #endif // PARTY_H

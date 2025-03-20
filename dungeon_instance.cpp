@@ -8,7 +8,7 @@
 
 using namespace std;
 
-DungeonInstance::DungeonInstance(int id, int t1, int t2)
+DungeonInstance::DungeonInstance(unsigned int id, unsigned int t1, unsigned int t2)
     : id(id), t1(t1), t2(t2), active(false), parties_served(0), total_time_served(0) {
 }
 
@@ -16,7 +16,7 @@ void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition
     // Random number generator setup
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dis(t1, t2);
+    uniform_int_distribution<unsigned int> dis(t1, t2);
 
     while (true) {
         unique_lock<mutex> lock(queueMutex);
@@ -29,7 +29,7 @@ void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition
             lock.unlock();
 
             // Simulate serving the party
-            int serve_time = dis(gen); // Generate a random serve time between t1 and t2
+            unsigned int serve_time = dis(gen); // Generate a random serve time between t1 and t2
             this_thread::sleep_for(chrono::seconds(serve_time));
 
             parties_served++;
@@ -57,15 +57,15 @@ void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition
     }
 }
 
-int DungeonInstance::getId() const {
+unsigned int DungeonInstance::getId() const {
     return id;
 }
 
-int DungeonInstance::getPartiesServed() const {
+unsigned int DungeonInstance::getPartiesServed() const {
     return parties_served;
 }
 
-int DungeonInstance::getTotalTimeServed() const {
+unsigned int DungeonInstance::getTotalTimeServed() const {
     return total_time_served;
 }
 

@@ -12,8 +12,8 @@
 
 using namespace std;
 
-void create_parties(int& tanks, int& healers, int& dps, queue<Party>& partyQueue) {
-    int partyId = 1;
+void create_parties(unsigned int& tanks, unsigned int& healers, unsigned int& dps, queue<Party>& partyQueue) {
+    unsigned int partyId = 1;
     while (tanks > 0 && healers > 0 && dps >= 3) {
         partyQueue.push(Party(partyId++, 1, 1, 1, 1, 1)); // Create a new party
         tanks--;
@@ -44,16 +44,16 @@ int main() {
         return -1;
     }
 
-    int n = config["n"];
-    int t1 = config["t1"];
-    int t2 = config["t2"];
+    unsigned int n = config["n"];
+    unsigned int t1 = config["t1"];
+    unsigned int t2 = config["t2"];
     if (t2 > 15) {
         t2 = 15;
     }
 
-    int tanks = config["tanks"];
-    int healers = config["healers"];
-    int dps = config["dps"];
+    unsigned int tanks = config["tanks"];
+    unsigned int healers = config["healers"];
+    unsigned int dps = config["dps"];
 
     system("cls");
 
@@ -62,7 +62,7 @@ int main() {
     vector<thread> threads;
     queue<Party> partyQueue;
     mutex queueMutex;
-    mutex printMutex;  // Add printing mutex
+    mutex printMutex;
     condition_variable cv;
 
     cout << "Configuration loaded successfully:" << endl;
@@ -75,7 +75,7 @@ int main() {
     cout << "---------- Dungeon Raiding Simulation ----------" << endl << endl;
 
     // Instantiate dungeon instances
-    for (int i = 0; i < n; ++i) {
+    for (unsigned int i = 0; i < n; ++i) {
         dungeons.emplace_back(i, t1, t2);
     }
 
@@ -102,8 +102,8 @@ int main() {
 
     cout << endl << "----------- Summary of LFG Dungeon ----------" << endl << endl;
 
-    int total_parties = 0;
-    int total_time = 0;
+    unsigned int total_parties = 0;
+    unsigned int total_time = 0;
     for (const auto& dungeon : dungeons) {
         cout << "Dungeon " << dungeon.getId() << " served " << dungeon.getPartiesServed() 
              << " parties in " << dungeon.getTotalTimeServed() << " seconds" << endl;
@@ -115,7 +115,7 @@ int main() {
     cout << "Total service time: " << total_time << " seconds" << endl;
     cout << "Average service time per party: " << (total_parties > 0 ? static_cast<float>(total_time) / total_parties : 0) << " seconds" << endl;
 
-    cout << endl <<"---------- Unused Roles ----------" << endl << endl;
+    cout << endl << "---------- Unused Roles ----------" << endl << endl;
 
     // Display unused players
     cout << "Unused tanks: " << tanks << endl;
