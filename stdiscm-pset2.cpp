@@ -24,8 +24,8 @@ void create_parties(int& tanks, int& healers, int& dps, queue<Party>& partyQueue
     cout << "Created " << partyQueue.size() << " parties." << endl << endl;
 }
 
-void run_dungeon(DungeonInstance& instance, queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv) {
-    instance.run(partyQueue, queueMutex, cv);
+void run_dungeon(DungeonInstance& instance, queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv, const vector<DungeonInstance>& allDungeons, mutex& printMutex) {
+    instance.run(partyQueue, queueMutex, cv, allDungeons, printMutex);
 }
 
 DungeonInstance* getDungeonInstance(vector<DungeonInstance>& dungeons) {
@@ -40,6 +40,7 @@ DungeonInstance* getDungeonInstance(vector<DungeonInstance>& dungeons) {
 int main() {
     auto config = read_config("config.txt");
     if (config.empty()) {
+        cerr << "\nFailed to read configuration. Please check the config.txt file and ensure all values are valid." << endl;
         return -1;
     }
 
@@ -50,13 +51,9 @@ int main() {
         t2 = 15;
     }
 
-    int tanks, healers, dps;
-    cout << "Enter the number of tank players in the queue: ";
-    cin >> tanks;
-    cout << "Enter the number of healer players in the queue: ";
-    cin >> healers;
-    cout << "Enter the number of DPS players in the queue: ";
-    cin >> dps;
+    int tanks = config["tanks"];
+    int healers = config["healers"];
+    int dps = config["dps"];
 
     system("cls");
 
@@ -65,11 +62,17 @@ int main() {
     vector<thread> threads;
     queue<Party> partyQueue;
     mutex queueMutex;
+    mutex printMutex;  // Add printing mutex
     condition_variable cv;
+
+    cout << "Configuration loaded successfully:" << endl;
+    cout << "Number of dungeon instances: " << n << endl;
+    cout << "Service time range: " << t1 << " - " << t2 << " seconds" << endl;
+    cout << "Players in queue: " << tanks << " tanks, " << healers << " healers, " << dps << " DPS" << endl << endl;
 
     create_parties(tanks, healers, dps, partyQueue);
 
-	cout << "---------- Dungeon Raiding Simulation ----------" << endl << endl;
+    cout << "---------- Dungeon Raiding Simulation ----------" << endl << endl;
 
     // Instantiate dungeon instances
     for (int i = 0; i < n; ++i) {
@@ -78,7 +81,7 @@ int main() {
 
     // Attach parties to dungeon instances and run them in separate threads
     for (auto& dungeon : dungeons) {
-        threads.emplace_back(run_dungeon, ref(dungeon), ref(partyQueue), ref(queueMutex), ref(cv));
+        threads.emplace_back(run_dungeon, ref(dungeon), ref(partyQueue), ref(queueMutex), ref(cv), ref(dungeons), ref(printMutex));
     }
 
     // Notify all threads to start processing parties
@@ -99,11 +102,18 @@ int main() {
 
     cout << endl << "----------- Summary of LFG Dungeon ----------" << endl << endl;
 
-    // Show summary
+    int total_parties = 0;
+    int total_time = 0;
     for (const auto& dungeon : dungeons) {
-        cout << "Dungeon " << dungeon.getId() << " served " << dungeon.getPartiesServed() << " parties for a total of "
-            << dungeon.getTotalTimeServed() << " seconds." << endl;
+        cout << "Dungeon " << dungeon.getId() << " served " << dungeon.getPartiesServed() 
+             << " parties in " << dungeon.getTotalTimeServed() << " seconds" << endl;
+        total_parties += dungeon.getPartiesServed();
+        total_time += dungeon.getTotalTimeServed();
     }
+
+    cout << endl << "Total parties served: " << total_parties << endl;
+    cout << "Total service time: " << total_time << " seconds" << endl;
+    cout << "Average service time per party: " << (total_parties > 0 ? static_cast<float>(total_time) / total_parties : 0) << " seconds" << endl;
 
     cout << endl <<"---------- Unused Roles ----------" << endl << endl;
 

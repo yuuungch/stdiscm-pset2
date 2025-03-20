@@ -4,12 +4,15 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <vector>
 #include "party.h"
+
+using namespace std;
 
 class DungeonInstance {
 public:
     DungeonInstance(int id, int t1, int t2);
-    void run(std::queue<Party>& partyQueue, std::mutex& queueMutex, std::condition_variable& cv);
+    void run(queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv, const vector<DungeonInstance>& allDungeons, mutex& printMutex);
     int getId() const;
     int getPartiesServed() const;
     int getTotalTimeServed() const;

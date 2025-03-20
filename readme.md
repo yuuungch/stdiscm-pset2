@@ -6,11 +6,14 @@
 - Run in Debug mode, can be with (F5) or without debugger (Ctrl + F5)
 
 ## Config File Contents:
-| Variable |         Description  |
-|----------|---------------------:|
-| n        | number of threads    |
-| t1       | time lower bound     |
-| t2       | time upper bound     |
+| Variable |         Description      |
+|----------|-------------------------:|
+| n        | number of threads        |
+| tanks    | number of tanks          |
+| healers  | number of healers        |
+| dps      | number of DPS's          |
+| t1       | time lower bound         |
+| t2       | time upper bound         |
 
 ## File Directory:
 | File             | Description                                            |

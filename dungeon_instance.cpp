@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <random>
+#include <vector>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ DungeonInstance::DungeonInstance(int id, int t1, int t2)
     : id(id), t1(t1), t2(t2), active(false), parties_served(0), total_time_served(0) {
 }
 
-void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv) {
+void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv, const vector<DungeonInstance>& allDungeons, mutex& printMutex) {
     // Random number generator setup
     random_device rd;
     mt19937 gen(rd());
@@ -33,9 +34,22 @@ void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition
 
             parties_served++;
             total_time_served += serve_time;
+            bool justBecameInactive = active; // Store the transition state
             active = false;
 
-            cout << "Dungeon " << id << " served party " << party.getId() << " in " << serve_time << " seconds." << endl;
+            // Lock the printing mutex before output
+            lock_guard<mutex> printLock(printMutex);
+            cout << "Dungeon " << id << " served party " << party.getId() << " in " << serve_time << " seconds." << endl << endl;
+            
+            // Show status of all dungeon instances
+            cout << "Current Dungeon Instances Status:" << endl;
+            for (const auto& dungeon : allDungeons) {
+                cout << "Dungeon " << dungeon.getId() << ": " 
+                     << (dungeon.isActive() ? "Active" : "Inactive")
+                     << ((&dungeon == this && !dungeon.isActive() && justBecameInactive) ? " <-- Just finished!" : "")
+                     << endl;
+            }
+            cout << "----------------------------------------" << endl << endl;
         }
         else if (partyQueue.empty()) {
             break;
