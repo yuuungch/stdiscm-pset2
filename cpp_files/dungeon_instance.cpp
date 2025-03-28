@@ -8,8 +8,8 @@
 
 using namespace std;
 
-DungeonInstance::DungeonInstance(unsigned int id, unsigned int t1, unsigned int t2)
-    : id(id), t1(t1), t2(t2), active(false), parties_served(0), total_time_served(0) {
+DungeonInstance::DungeonInstance(unsigned int id, unsigned int t1, unsigned int t2, unsigned int timeout)
+    : id(id), t1(t1), t2(t2), timeout(timeout), active(false), parties_served(0), total_time_served(0) {
 }
 
 void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv, const vector<DungeonInstance>& allDungeons, mutex& printMutex) {
@@ -37,19 +37,42 @@ void DungeonInstance::run(queue<Party>& partyQueue, mutex& queueMutex, condition
             bool justBecameInactive = active; // Store the transition state
             active = false;
 
-            // Lock the printing mutex before output
-            lock_guard<mutex> printLock(printMutex);
-            cout << "Dungeon " << id << " served party " << party.getId() << " in " << serve_time << " seconds." << endl << endl;
-            
-            // Show status of all dungeon instances
-            cout << "Current Dungeon Instances Status:" << endl;
-            for (const auto& dungeon : allDungeons) {
-                cout << "Dungeon " << dungeon.getId() << ": " 
-                     << (dungeon.isActive() ? "Active" : "Inactive")
-                     << ((&dungeon == this && !dungeon.isActive() && justBecameInactive) ? " <-- Just finished!" : "")
-                     << endl;
+            // Check active dungeons before taking the printLock
+            bool otherDungeonsActive = false;
+            {
+                lock_guard<mutex> checkLock(printMutex);
+                for (const auto& dungeon : allDungeons) {
+                    if (&dungeon != this && dungeon.isActive()) {
+                        otherDungeonsActive = true;
+                        break;
+                    }
+                }
             }
-            cout << "----------------------------------------" << endl << endl;
+
+            {  // Scope for printLock
+                // Lock the printing mutex before output
+                lock_guard<mutex> printLock(printMutex);
+                cout << "Dungeon " << id << " served party " << party.getId() << " in " << serve_time << " seconds." << endl;
+                
+                if (otherDungeonsActive) {
+                    cout << "Dungeon " << id << " is now on cooldown for " << timeout << " seconds." << endl << endl;
+                }
+                
+                // Show status of all dungeon instances
+                cout << "Current Dungeon Instances Status:" << endl;
+                for (const auto& dungeon : allDungeons) {
+                    cout << "Dungeon " << dungeon.getId() << ": " 
+                         << (dungeon.isActive() ? "Active" : "Inactive")
+                         << ((&dungeon == this && !dungeon.isActive() && justBecameInactive) ? " <-- Just finished!" : "")
+                         << endl;
+                }
+                cout << "----------------------------------------" << endl << endl;
+            }  // Release printLock
+
+            // Apply timeout after releasing printLock if needed
+            if (otherDungeonsActive) {
+                this_thread::sleep_for(chrono::seconds(timeout));
+            }
         }
         else if (partyQueue.empty()) {
             break;

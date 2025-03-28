@@ -11,7 +11,7 @@ using namespace std;
 
 class DungeonInstance {
 public:
-    DungeonInstance(unsigned int id, unsigned int t1, unsigned int t2);
+    DungeonInstance(unsigned int id, unsigned int t1, unsigned int t2, unsigned int timeout = 2);
     void run(queue<Party>& partyQueue, mutex& queueMutex, condition_variable& cv, const vector<DungeonInstance>& allDungeons, mutex& printMutex);
     unsigned int getId() const;
     unsigned int getPartiesServed() const;
@@ -23,6 +23,7 @@ private:
     unsigned int id;
     unsigned int t1;
     unsigned int t2;
+    unsigned int timeout;  // Timeout duration in seconds
     bool active;
     unsigned int parties_served;
     unsigned int total_time_served;

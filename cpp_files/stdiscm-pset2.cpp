@@ -114,7 +114,7 @@ int main() {
 
     // Instantiate dungeon instances
     for (unsigned int i = 0; i < n; ++i) {
-        dungeons.emplace_back(i, t1, t2);
+        dungeons.emplace_back(i, t1, t2, 3);
     }
 
     // Attach parties to dungeon instances and run them in separate threads
