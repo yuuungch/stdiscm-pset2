@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="test_configs\all_valid.txt" />
+    <Text Include="test_configs\imbalanced_roles.txt" />
     <Text Include="test_configs\invalid_n.txt" />
     <Text Include="test_configs\invalid_t1.txt" />
     <Text Include="test_configs\invalid_t2.txt" />
