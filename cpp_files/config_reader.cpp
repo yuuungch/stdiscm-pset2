@@ -50,8 +50,8 @@ unordered_map<string, unsigned int> read_config(const string& filename) {
             cerr << "Error: Invalid value for " << key << ". Must be a positive integer." << endl;
             valid = false;
         }
-        else if (key == "n" && value > 10) {
-            cerr << "Error: Number of dungeon instances (n) cannot exceed 10." << endl;
+        else if (key == "n" && value > numeric_limits<unsigned int>::max()) {
+            cerr << "Error: Number of dungeon instances (n) cannot exceed " << numeric_limits<unsigned int>::max() << "." << endl;
             valid = false;
         }
         else if (key == "t2" && value > 15) {

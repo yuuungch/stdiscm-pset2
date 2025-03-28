@@ -143,7 +143,6 @@
   <ItemGroup>
     <Text Include="test_configs\all_valid.txt" />
     <Text Include="test_configs\imbalanced_roles.txt" />
-    <Text Include="test_configs\invalid_n.txt" />
     <Text Include="test_configs\invalid_t1.txt" />
     <Text Include="test_configs\invalid_t2.txt" />
     <Text Include="test_configs\negative_dps.txt" />
@@ -151,6 +150,7 @@
     <Text Include="test_configs\negative_tanks.txt" />
     <Text Include="test_configs\overflow_dps.txt" />
     <Text Include="test_configs\overflow_healers.txt" />
+    <Text Include="test_configs\overflow_n.txt" />
     <Text Include="test_configs\overflow_tanks.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -42,7 +42,7 @@ int main() {
     do {
         cout << "Choose a test configuration:" << endl;
         cout << "1. All valid values" << endl;
-        cout << "2. Invalid number of dungeons (n > 10)" << endl;
+        cout << "2. Overflow number of dungeons (n > 4294967295)" << endl;
         cout << "3. Invalid minimum service time (t1 > t2)" << endl;
         cout << "4. Invalid maximum service time (t2 > 15)" << endl;
         cout << "5. Overflow tanks value" << endl;
@@ -64,7 +64,7 @@ int main() {
     string config_file;
     switch(choice) {
         case 1: config_file = "test_configs/all_valid.txt"; break;
-        case 2: config_file = "test_configs/invalid_n.txt"; break;
+        case 2: config_file = "test_configs/overflow_n.txt"; break;
         case 3: config_file = "test_configs/invalid_t1.txt"; break;
         case 4: config_file = "test_configs/invalid_t2.txt"; break;
         case 5: config_file = "test_configs/overflow_tanks.txt"; break;
