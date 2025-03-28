@@ -28,8 +28,8 @@
 | Test File           | Description                                     | Expected Behavior                                   |
 |---------------------|-------------------------------------------------|-----------------------------------------------------|
 | all_valid.txt       | All values within valid ranges                  | Program runs normally                               |
-| invalid_n.txt       | n > 10 (max dungeons)                           | Error: Invalid number of dungeons                   |
-| invalid_t1.txt      | t1 > t2                                         | Error: Invalid time range                           |
+| overflow_n.txt      | n > unsigned int max (max dungeons)             | Error: Invalid number of dungeons                   |
+| invalid_t1.txt      | t1 > t2                                         | Error: Invalid t1                                   |
 | invalid_t2.txt      | t2 > 15 seconds                                 | Error: T2 resets to 15, program runs normally       |
 | overflow_tank.txt   | Tank count > unsigned int max                   | Error: Invalid tank count                           |
 | overflow_healer.txt | Healer count > unsigned int max                 | Error: Invalid healer count                         |
