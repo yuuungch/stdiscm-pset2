@@ -127,21 +127,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="config_reader.cpp" />
-    <ClCompile Include="dungeon_instance.cpp" />
-    <ClCompile Include="party.cpp" />
-    <ClCompile Include="stdiscm-pset2.cpp" />
+    <ClCompile Include="cpp_files\config_reader.cpp" />
+    <ClCompile Include="cpp_files\dungeon_instance.cpp" />
+    <ClCompile Include="cpp_files\party.cpp" />
+    <ClCompile Include="cpp_files\stdiscm-pset2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config_reader.h" />
-    <ClInclude Include="dungeon_instance.h" />
-    <ClInclude Include="party.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config.txt" />
+    <ClInclude Include="header_files\config_reader.h" />
+    <ClInclude Include="header_files\dungeon_instance.h" />
+    <ClInclude Include="header_files\party.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test_configs\all_valid.txt" />
+    <Text Include="test_configs\invalid_n.txt" />
+    <Text Include="test_configs\invalid_t1.txt" />
+    <Text Include="test_configs\invalid_t2.txt" />
+    <Text Include="test_configs\negative_dps.txt" />
+    <Text Include="test_configs\negative_healers.txt" />
+    <Text Include="test_configs\negative_tanks.txt" />
+    <Text Include="test_configs\overflow_dps.txt" />
+    <Text Include="test_configs\overflow_healers.txt" />
+    <Text Include="test_configs\overflow_tanks.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

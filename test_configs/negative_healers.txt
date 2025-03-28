@@ -1,0 +1,6 @@
+n 3
+tanks 3
+healers -1
+dps 9
+t1 5
+t2 10

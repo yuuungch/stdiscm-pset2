@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -15,32 +15,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdiscm-pset2.cpp">
+    <ClCompile Include="cpp_files\config_reader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="config_reader.cpp">
+    <ClCompile Include="cpp_files\dungeon_instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dungeon_instance.cpp">
+    <ClCompile Include="cpp_files\party.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="party.cpp">
+    <ClCompile Include="cpp_files\stdiscm-pset2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config_reader.h">
+    <ClInclude Include="header_files\config_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dungeon_instance.h">
+    <ClInclude Include="header_files\dungeon_instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="party.h">
+    <ClInclude Include="header_files\party.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="config.txt" />
+    <Text Include="config.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />

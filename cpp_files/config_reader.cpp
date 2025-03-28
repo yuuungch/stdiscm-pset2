@@ -1,4 +1,4 @@
-#include "config_reader.h"
+#include "../header_files/config_reader.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -57,6 +57,16 @@ unordered_map<string, unsigned int> read_config(const string& filename) {
         else if (key == "t2" && value > 15) {
             cerr << "Warning: Maximum service time (t2) capped at 15 seconds." << endl;
             value = 15;
+        }
+        
+        // Additional range validation for each key
+        if (valid) {
+            if (key == "tanks" || key == "healers" || key == "dps") {
+                if (value > numeric_limits<unsigned int>::max() / 3) {  // Prevent potential overflow when combining players
+                    cerr << "Error: Number of " << key_descriptions[key] << " exceeds maximum allowed value." << endl;
+                    valid = false;
+                }
+            }
         }
         
         if (valid) {

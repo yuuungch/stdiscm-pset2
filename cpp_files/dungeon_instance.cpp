@@ -1,5 +1,5 @@
-#include "dungeon_instance.h"
-#include "party.h"
+#include "../header_files/dungeon_instance.h"
+#include "../header_files/party.h"
 #include <iostream>
 #include <chrono>
 #include <thread>

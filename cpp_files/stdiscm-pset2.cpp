@@ -6,9 +6,9 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <ctime>
-#include "config_reader.h"
-#include "dungeon_instance.h"
-#include "party.h"
+#include "../header_files/config_reader.h"
+#include "../header_files/dungeon_instance.h"
+#include "../header_files/party.h"
 
 using namespace std;
 
@@ -38,9 +38,47 @@ DungeonInstance* getDungeonInstance(vector<DungeonInstance>& dungeons) {
 }
 
 int main() {
-    auto config = read_config("config.txt");
+    int choice;
+    do {
+        cout << "Choose a test configuration:" << endl;
+        cout << "1. All valid values" << endl;
+        cout << "2. Invalid number of dungeons (n > 10)" << endl;
+        cout << "3. Invalid minimum service time (t1 > t2)" << endl;
+        cout << "4. Invalid maximum service time (t2 > 15)" << endl;
+        cout << "5. Overflow tanks value" << endl;
+        cout << "6. Overflow healers value" << endl;
+        cout << "7. Overflow DPS value" << endl;
+        cout << "8. Negative tanks value" << endl;
+        cout << "9. Negative healers value" << endl;
+        cout << "10. Negative DPS value" << endl;
+        cout << "\nEnter your choice (1-10): ";
+
+        cin >> choice;
+
+        if (choice < 1 || choice > 10) {
+            cout << "\nInvalid choice. Please try again." << endl << endl;
+        }
+    } while (choice < 1 || choice > 10);
+
+    string config_file;
+    switch(choice) {
+        case 1: config_file = "test_configs/all_valid.txt"; break;
+        case 2: config_file = "test_configs/invalid_n.txt"; break;
+        case 3: config_file = "test_configs/invalid_t1.txt"; break;
+        case 4: config_file = "test_configs/invalid_t2.txt"; break;
+        case 5: config_file = "test_configs/overflow_tanks.txt"; break;
+        case 6: config_file = "test_configs/overflow_healers.txt"; break;
+        case 7: config_file = "test_configs/overflow_dps.txt"; break;
+        case 8: config_file = "test_configs/negative_tanks.txt"; break;
+        case 9: config_file = "test_configs/negative_healers.txt"; break;
+        case 10: config_file = "test_configs/negative_dps.txt"; break;
+    }
+
+    cout << "\nUsing configuration file: " << config_file << endl << endl;
+
+    auto config = read_config(config_file);
     if (config.empty()) {
-        cerr << "\nFailed to read configuration. Please check the config.txt file and ensure all values are valid." << endl;
+        cerr << "\nFailed to read configuration. Please check the config file and ensure all values are valid." << endl;
         return -1;
     }
 
